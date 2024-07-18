@@ -1,0 +1,46 @@
+GS2TemplateFormatVersion: "2019-05-01"
+Resources:
+  AccountNamespace:
+    Type: GS2::Account::Namespace
+    Properties:
+      Name: default
+
+  InventoryNamespace:
+    Type: GS2::Inventory::Namespace
+    Properties:
+      Name: LotteryTicket
+
+  InventoryMasterData:
+    Type: GS2::Inventory::CurrentItemModelMaster
+    Properties:
+      NamespaceName: LotteryTicket
+      Settings:
+        {
+          "version": "2019-02-05",
+          "inventoryModels": [
+            {
+              "name": "Bag",
+              "initialCapacity": 10,
+              "maxCapacity": 10,
+              "protectReferencedItem": false,
+              "itemModels": [
+                {
+                  "name": "Ticket-1",
+                  "stackingLimit": 99,
+                  "allowMultipleStacks": false,
+                  "sortValue": 0
+                },
+                {
+                  "name": "Ticket-10",
+                  "stackingLimit": 99,
+                  "allowMultipleStacks": false,
+                  "sortValue": 0
+                }
+              ]
+            }
+          ],
+          "simpleInventoryModels": [],
+          "bigInventoryModels": []
+        }
+    DependsOn:
+      - InventoryNamespace

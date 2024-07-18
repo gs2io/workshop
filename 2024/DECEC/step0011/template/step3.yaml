@@ -1,0 +1,420 @@
+GS2TemplateFormatVersion: "2019-05-01"
+Resources:
+  AccountNamespace:
+    Type: GS2::Account::Namespace
+    Properties:
+      Name: default
+
+  InventoryNamespace:
+    Type: GS2::Inventory::Namespace
+    Properties:
+      Name: LotteryTicket
+
+  InventoryMasterData:
+    Type: GS2::Inventory::CurrentItemModelMaster
+    Properties:
+      NamespaceName: LotteryTicket
+      Settings:
+        {
+          "version": "2019-02-05",
+          "inventoryModels": [
+            {
+              "name": "Bag",
+              "initialCapacity": 10,
+              "maxCapacity": 10,
+              "protectReferencedItem": false,
+              "itemModels": [
+                {
+                  "name": "Ticket-1",
+                  "stackingLimit": 99,
+                  "allowMultipleStacks": false,
+                  "sortValue": 0
+                },
+                {
+                  "name": "Ticket-10",
+                  "stackingLimit": 99,
+                  "allowMultipleStacks": false,
+                  "sortValue": 0
+                }
+              ]
+            }
+          ],
+          "simpleInventoryModels": [],
+          "bigInventoryModels": []
+        }
+    DependsOn:
+      - InventoryNamespace
+
+  ExchangeNamespace:
+    Type: GS2::Exchange::Namespace
+    Properties:
+      Name: AcquireLotteryTicket
+      TransactionSetting:
+        EnableAutoRun: true
+
+  ExchangeMasterData:
+    Type: GS2::Exchange::CurrentRateMaster
+    Properties:
+      NamespaceName: AcquireLotteryTicket
+      Settings:
+        {
+          "version": "2019-08-19",
+          "rateModels": [
+            {
+              "name": "Ticket-1",
+              "consumeActions": [],
+              "timingType": "immediate",
+              "lockTime": 0,
+              "acquireActions": [
+                {
+                  "action": "Gs2Inventory:AcquireItemSetByUserId",
+                  "request": {
+                    "namespaceName": "LotteryTicket",
+                    "inventoryName": "Bag",
+                    "itemName": "Ticket-1",
+                    "userId": "#{userId}",
+                    "acquireCount": 1
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Ticket-10",
+              "consumeActions": [],
+              "timingType": "immediate",
+              "lockTime": 0,
+              "acquireActions": [
+                {
+                  "action": "Gs2Inventory:AcquireItemSetByUserId",
+                  "request": {
+                      "namespaceName": "LotteryTicket",
+                      "inventoryName": "Bag",
+                      "itemName": "Ticket-10",
+                      "userId": "#{userId}",
+                      "acquireCount": 1
+                    }
+                }
+              ]
+            }
+          ],
+          "incrementalRateModels": []
+        }
+    DependsOn:
+      - ExchangeNamespace
+
+  DictionaryNamespace:
+    Type: GS2::Dictionary::Namespace
+    Properties:
+      Name: Panel
+
+  DictionaryMasterData:
+    Type: GS2::Dictionary::CurrentEntryMaster
+    Properties:
+      NamespaceName: Panel
+      Settings:
+        {
+          "version": "2020-04-30",
+          "entryModels": [
+            {
+              "name": "Panel-x1y1"
+            },
+            {
+              "name": "Panel-x1y2"
+            },
+            {
+              "name": "Panel-x1y3"
+            },
+            {
+              "name": "Panel-x2y1"
+            },
+            {
+              "name": "Panel-x2y2"
+            },
+            {
+              "name": "Panel-x2y3"
+            },
+            {
+              "name": "Panel-x3y1"
+            },
+            {
+              "name": "Panel-x3y2"
+            },
+            {
+              "name": "Panel-x3y3"
+            }
+          ]
+        }
+    DependsOn:
+      - DictionaryNamespace
+
+  LotteryNamespace:
+    Type: GS2::Lottery::Namespace
+    Properties:
+      Name: Lottery
+
+  LotteryMasterData:
+    Type: GS2::Lottery::CurrentLotteryMaster
+    Properties:
+      NamespaceName: Lottery
+      Settings:
+        {
+          "version": "2019-02-21",
+          "lotteryModels": [
+            {
+              "name": "Panel",
+              "mode": "normal",
+              "method": "prize_table",
+              "prizeTableName": "Panel"
+            }
+          ],
+          "prizeTables": [
+            {
+              "name": "Panel",
+              "prizes": [
+                {
+                  "prizeId": "Panel-x1y1",
+                  "type": "action",
+                  "acquireActions": [
+                    {
+                      "action": "Gs2Dictionary:AddEntriesByUserId",
+                      "request": {
+                        "namespaceName": "Panel",
+                        "userId": "#{userId}",
+                        "entryModelNames": [
+                          "Panel-x1y1"
+                        ]
+                      }
+                    }
+                  ],
+                  "weight": 1
+                },
+                {
+                  "prizeId": "Panel-x1y2",
+                  "type": "action",
+                  "acquireActions": [
+                    {
+                      "action": "Gs2Dictionary:AddEntriesByUserId",
+                      "request": {
+                        "namespaceName": "Panel",
+                        "userId": "#{userId}",
+                        "entryModelNames": [
+                          "Panel-x1y2"
+                        ]
+                      }
+                    }
+                  ],
+                  "weight": 1
+                },
+                {
+                  "prizeId": "Panel-x1y3",
+                  "type": "action",
+                  "acquireActions": [
+                    {
+                      "action": "Gs2Dictionary:AddEntriesByUserId",
+                      "request": {
+                        "namespaceName": "Panel",
+                        "userId": "#{userId}",
+                        "entryModelNames": [
+                          "Panel-x1y3"
+                        ]
+                      }
+                    }
+                  ],
+                  "weight": 1
+                },
+                {
+                  "prizeId": "Panel-x2y1",
+                  "type": "action",
+                  "acquireActions": [
+                    {
+                      "action": "Gs2Dictionary:AddEntriesByUserId",
+                      "request": {
+                        "namespaceName": "Panel",
+                        "userId": "#{userId}",
+                        "entryModelNames": [
+                          "Panel-x2y1"
+                        ]
+                      }
+                    }
+                  ],
+                  "weight": 1
+                },
+                {
+                  "prizeId": "Panel-x2y2",
+                  "type": "action",
+                  "acquireActions": [
+                    {
+                      "action": "Gs2Dictionary:AddEntriesByUserId",
+                      "request": {
+                        "namespaceName": "Panel",
+                        "userId": "#{userId}",
+                        "entryModelNames": [
+                          "Panel-x2y2"
+                        ]
+                      }
+                    }
+                  ],
+                  "weight": 1
+                },
+                {
+                  "prizeId": "Panel-x2y3",
+                  "type": "action",
+                  "acquireActions": [
+                    {
+                      "action": "Gs2Dictionary:AddEntriesByUserId",
+                      "request": {
+                        "namespaceName": "Panel",
+                        "userId": "#{userId}",
+                        "entryModelNames": [
+                          "Panel-x2y3"
+                        ]
+                      }
+                    }
+                  ],
+                  "weight": 1
+                },
+                {
+                  "prizeId": "Panel-x3y1",
+                  "type": "action",
+                  "acquireActions": [
+                    {
+                      "action": "Gs2Dictionary:AddEntriesByUserId",
+                      "request": {
+                        "namespaceName": "Panel",
+                        "userId": "#{userId}",
+                        "entryModelNames": [
+                          "Panel-x3y1"
+                        ]
+                      }
+                    }
+                  ],
+                  "weight": 1
+                },
+                {
+                  "prizeId": "Panel-x3y2",
+                  "type": "action",
+                  "acquireActions": [
+                    {
+                      "action": "Gs2Dictionary:AddEntriesByUserId",
+                      "request": {
+                        "namespaceName": "Panel",
+                        "userId": "#{userId}",
+                        "entryModelNames": [
+                          "Panel-x3y2"
+                        ]
+                      }
+                    }
+                  ],
+                  "weight": 1
+                },
+                {
+                  "prizeId": "Panel-x3y3",
+                  "type": "action",
+                  "acquireActions": [
+                    {
+                      "action": "Gs2Dictionary:AddEntriesByUserId",
+                      "request": {
+                        "namespaceName": "Panel",
+                        "userId": "#{userId}",
+                        "entryModelNames": [
+                          "Panel-x3y3"
+                        ]
+                      }
+                    }
+                  ],
+                  "weight": 1
+                }
+              ]
+            }
+          ]
+        }
+    DependsOn:
+      - LotteryNamespace
+
+  ShowcaseNamespace:
+    Type: GS2::Showcase::Namespace
+    Properties:
+      Name: LotteryShowcase
+      TransactionSetting:
+        EnableAutoRun: true
+
+  ShowcaseMasterData:
+    Type: GS2::Showcase::CurrentShowcaseMaster
+    Properties:
+      NamespaceName: LotteryShowcase
+      Settings:
+        {
+          "version": "2019-04-04",
+          "showcases": [
+            {
+              "name": "Showcase",
+              "displayItems": [
+                {
+                  "displayItemId": "Lottery-1",
+                  "type": "salesItem",
+                  "salesItem": {
+                    "name": "Lottery-1",
+                    "consumeActions": [
+                      {
+                        "action": "Gs2Inventory:ConsumeItemSetByUserId",
+                        "request": {
+                            "namespaceName": "LotteryTicket",
+                            "inventoryName": "Bag",
+                            "userId": "#{userId}",
+                            "itemName": "Ticket-1",
+                            "consumeCount": 1
+                          }
+                      }
+                    ],
+                    "acquireActions": [
+                      {
+                        "action": "Gs2Lottery:DrawByUserId",
+                        "request": {
+                            "namespaceName": "Lottery",
+                            "lotteryName": "Panel",
+                            "userId": "#{userId}",
+                            "count": 1,
+                            "config": []
+                          }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "displayItemId": "Lottery-10",
+                  "type": "salesItem",
+                  "salesItem": {
+                    "name": "Lottery-10",
+                    "consumeActions": [
+                      {
+                        "action": "Gs2Inventory:ConsumeItemSetByUserId",
+                        "request": {
+                            "namespaceName": "LotteryTicket",
+                            "inventoryName": "Bag",
+                            "userId": "#{userId}",
+                            "itemName": "Ticket-10",
+                            "consumeCount": 1
+                          }
+                      }
+                    ],
+                    "acquireActions": [
+                      {
+                        "action": "Gs2Lottery:DrawByUserId",
+                        "request": {
+                            "namespaceName": "Lottery",
+                            "lotteryName": "Panel",
+                            "userId": "#{userId}",
+                            "count": 10,
+                            "config": []
+                          }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "randomShowcases": []
+        }
+    DependsOn:
+      - ShowcaseNamespace
