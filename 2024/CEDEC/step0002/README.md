@@ -115,6 +115,7 @@ C# スクリプトを Login.cs という名前で作成し、以下のコード�
 ```csharp
 using System;
 using System.Collections;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Gs2.Core.Exception;
 using Gs2.Unity.Util;
@@ -181,10 +182,6 @@ public class Login : MonoBehaviour
     [Serializable]
     public class ErrorEvent : UnityEvent<Gs2Exception, Func<IEnumerator>>
     {
-    }
-    
-    public void DebugErrorHandler(Gs2Exception e, Func<IEnumerator> retry) {
-        Debug.LogError($"{e.GetType()} {string.Join(",", e.Errors.Select(v => v.Message))} : Retryable={retry != null}");
     }
 }
 ```
