@@ -194,7 +194,7 @@ OnClick に AcquireTicket.Exchange をアタッチします。
 
 ### 10連ガチャ用ガチャチケットを入手できるように
 
-AcquireTicket-10 Button に AcquireTicket.cs をアタッチし、先ほどとどうようの設定を加えます。
+AcquireTicket-10 Button に AcquireTicket.cs をアタッチし、先ほどと同様の設定を加えます。
 一点だけ異なるのが交換レート名を Ticket-10 にすることです。
 
 ### 実行
