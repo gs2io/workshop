@@ -103,7 +103,7 @@ Panels に9パネルに対応した GameObject を設定します。
 
 ## 実行
 
-「Acquire Ticket-1」を押下し、ガチャチケットを入手します。
+「Acquire Ticket-1」を押下し、単発ガチャチケットを入手します。
 
 ![img_7.png](img/img_7.png)
 
